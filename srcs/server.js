@@ -25,6 +25,21 @@ app.get('/static/me', async(req, res) =>{
 	})
 })
 
+app.get('/static/events', async(req, res) =>{
+	var myheaders =  {"Authorization": "Bearer " + token};
+	const options = {
+		method: 'GET',
+		headers: myheaders,
+		mode: 'cors',
+		cache: 'default'
+	}
+	const response = await fetch("https://api.intra.42.fr/v2/campus/22/events", options, (error, meta, body)=>{
+		const data = JSON.parse(body.toString())
+		console.log(data)
+		res.render(__dirname + '/public/static/events.ejs', {events: data, req_ret:''})
+	})
+})
+
 app.get('/index?*', async(req, res) =>{
 	const url = req.url
 	let index = url.indexOf("?")
@@ -72,6 +87,7 @@ app.get('/app/call', async(req, res) =>{
 	const response = await fetch("https://api.intra.42.fr" + link , options, (error, meta, body)=>{
 		const data = JSON.parse(body.toString())
 		console.log(data)
+		console.log(meta)
 		return res.json({data})
 		})
 })
