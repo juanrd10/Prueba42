@@ -21,7 +21,7 @@ app.get('/static/me', async(req, res) =>{
 	const response = await fetch("https://api.intra.42.fr/v2/me", options, (error, meta, body)=>{
 		const data = JSON.parse(body.toString())
 		console.log(data)
-		res.render(__dirname + '/public/index.ejs', {me: data, req_ret:''})
+		res.render(__dirname + '/public/static/me.ejs', {me: data, req_ret:''})
 	})
 })
 
