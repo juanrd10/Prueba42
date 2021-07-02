@@ -1,4 +1,4 @@
-const IP = "10.11.5.2"
+const IP = ""
 
 let parse_req = async(data, use)=>{
 	if (use == "users")
