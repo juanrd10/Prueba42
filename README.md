@@ -1,10 +1,8 @@
-# Prueba42
+# PRUEBA42
 
 Proyecto hecho para la prueba de Malaga y Barcelona.
 
-# JAVASCRIPT:
-
-Uso (MacOX):
+## Uso en (MacOX):
 
 ### Pre-requisitos 📋
 Tienes que tener una API creada en la intranet.
