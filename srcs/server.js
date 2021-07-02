@@ -5,6 +5,7 @@ require('dotenv').config()
 const port = 3000
 let token
 let acs_token
+let next
 
 app.get('/', async(req, res) =>{
 	res.redirect('https://api.intra.42.fr/oauth/authorize?client_id=' + process.env. CLIENT_ID + '&redirect_uri=http%3A%2F%2F' + process.env.IP + '%3A3000%2Findex&response_type=code')
@@ -25,6 +26,27 @@ app.get('/static/me', async(req, res) =>{
 	})
 })
 
+app.get('/static/next', async(req, res) =>{
+	var myheaders =  {"Authorization": "Bearer " + token};
+	const options = {
+		method: 'GET',
+		headers: myheaders,
+		mode: 'cors',
+		cache: 'default'
+	}
+	const response = await fetch(next, options, (error, meta, body)=>{
+		const data = JSON.parse(body.toString())
+		next = meta.responseHeaders.link
+		console.log(data)
+		let next_index = next.lastIndexOf("https:")
+		let last = next.lastIndexOf(">")
+		next = next.substring(next_index, last);
+		console.log(next)
+		console.log(next_index)
+		res.render(__dirname + '/public/static/events.ejs', {events: data, req_ret:''})
+	})
+})
+
 app.get('/static/events', async(req, res) =>{
 	var myheaders =  {"Authorization": "Bearer " + token};
 	const options = {
@@ -35,7 +57,13 @@ app.get('/static/events', async(req, res) =>{
 	}
 	const response = await fetch("https://api.intra.42.fr/v2/campus/22/events", options, (error, meta, body)=>{
 		const data = JSON.parse(body.toString())
+		next = meta.responseHeaders.link
 		console.log(data)
+		let next_index = next.lastIndexOf("https:")
+		let last = next.lastIndexOf(">")
+		next = next.substring(next_index, last);
+		console.log(next)
+		console.log(next_index)
 		res.render(__dirname + '/public/static/events.ejs', {events: data, req_ret:''})
 	})
 })
